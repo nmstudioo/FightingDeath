@@ -1,0 +1,1385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="Metal AI Music — No Limits. Where heavy music meets artificial intelligence. An editorial publication by NM Studio."/>
+  <title>Metal AI Music — No Limits · NM Studio</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg"/>
+  <meta property="og:type" content="website"/>
+  <meta property="og:title" content="Metal AI Music — No Limits · NM Studio"/>
+  <meta property="og:description" content="Where heavy music meets artificial intelligence. The Fighting Death record — now streaming inside the guide from Bandcamp and YouTube."/>
+  <meta property="og:image" content="og-image.png"/>
+  <meta name="twitter:card" content="summary_large_image"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,700&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,500;1,8..60,300;1,8..60,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg:        #0a0a0c;
+      --paper:     #0f0f13;
+      --surface:   #141419;
+      --border:    #222230;
+      --border-hi: #32323f;
+      --crimson:      #c0392b;
+      --crimson-dim:  rgba(192,57,43,.12);
+      --crimson-glow: rgba(192,57,43,.25);
+      --text:     #ede8df;
+      --text-2:   #9a9490;
+      --text-3:   #5a5560;
+      --mono:   'JetBrains Mono', monospace;
+      --serif:  'Playfair Display', Georgia, serif;
+      --body:   'Source Serif 4', Georgia, serif;
+      --col:    680px;
+      --wide:   860px;
+      --tr:     0.22s ease;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; font-size: 17px; }
+    body { font-family: var(--body); background: var(--bg); color: var(--text); line-height: 1.75; overflow-x: hidden; }
+    ::selection { background: var(--crimson-dim); color: var(--text); }
+    a { color: var(--crimson); text-decoration: none; border-bottom: 1px solid rgba(192,57,43,.3); transition: border-color var(--tr), color var(--tr); }
+    a:hover { color: #e04c3a; border-bottom-color: #e04c3a; }
+    em { font-style: italic; }
+    strong { font-weight: 600; color: var(--text); }
+
+    /* READING BAR */
+    .reading-bar { position: fixed; top: 0; left: 0; height: 2px; width: 0%; background: var(--crimson); z-index: 300; transition: width .08s linear; }
+
+    /* TOP NAV */
+    .topnav { position: sticky; top: 0; z-index: 200; background: rgba(10,10,12,.93); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-bottom: 1px solid var(--border); }
+    .topnav-inner { max-width: var(--wide); margin-inline: auto; padding: 0.7rem clamp(1rem,5vw,2rem); display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+    .topnav-brand { display: flex; align-items: center; gap: 0.6rem; font-family: var(--mono); font-size: 0.72rem; font-weight: 500; color: var(--text-3); letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; border: none; }
+    .topnav-brand:hover { color: var(--text-2); }
+    .topnav-brand .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--crimson); flex-shrink: 0; animation: pulse-dot 3s ease-in-out infinite; }
+    @keyframes pulse-dot { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(0.8)} }
+    .topnav-right { font-family: var(--mono); font-size: 0.68rem; color: var(--text-3); letter-spacing: 0.08em; white-space: nowrap; }
+
+    /* Hamburger */
+    .nav-toggle { display: none; flex-direction: column; gap: 4px; background: none; border: 1px solid var(--border); border-radius: 5px; padding: 7px 8px; cursor: pointer; width: 36px; height: 32px; flex-shrink: 0; }
+    .nav-toggle .b { display: block; width: 100%; height: 1.5px; background: var(--text-3); border-radius: 1px; transition: transform .3s ease, opacity .2s ease; transform-origin: center; }
+    .nav-toggle.open .b:nth-child(1) { transform: translateY(5.5px) rotate(45deg); background: var(--crimson); }
+    .nav-toggle.open .b:nth-child(2) { opacity: 0; }
+    .nav-toggle.open .b:nth-child(3) { transform: translateY(-5.5px) rotate(-45deg); background: var(--crimson); }
+
+    /* Chapter nav drawer */
+    .chapter-nav { max-width: var(--wide); margin-inline: auto; padding-inline: clamp(1rem,5vw,2rem); display: flex; align-items: center; gap: 0.25rem; overflow-x: auto; scrollbar-width: none; max-height: 0; overflow: hidden; transition: max-height 0.35s ease, padding 0.25s ease; }
+    .chapter-nav::-webkit-scrollbar { display: none; }
+    .chapter-nav.open { max-height: 200px; padding-block: 0.6rem 0.8rem; overflow-x: auto; }
+    .chapter-nav a { font-family: var(--mono); font-size: 0.67rem; font-weight: 500; letter-spacing: 0.07em; text-transform: uppercase; color: var(--text-3); border: 1px solid transparent; padding: 0.28rem 0.65rem; border-radius: 4px; white-space: nowrap; text-decoration: none; transition: color var(--tr), border-color var(--tr), background var(--tr); }
+    .chapter-nav a:hover { color: var(--text); border-color: var(--border); background: var(--surface); }
+    .chapter-nav a.active { color: var(--crimson); border-color: rgba(192,57,43,.3); background: var(--crimson-dim); }
+    @media (max-width: 640px) { .nav-toggle { display: flex; } }
+
+    /* COVER */
+    .cover { position: relative; overflow: hidden; min-height: 100svh; display: flex; flex-direction: column; justify-content: flex-end; padding: clamp(2rem,8vw,5rem) clamp(1rem,5vw,2rem) clamp(3rem,8vw,5rem); border-bottom: 1px solid var(--border); }
+    .cover-grain { position: absolute; inset: 0; pointer-events: none; z-index: 1; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E"); background-size: 200px 200px; }
+    .cover-spine { position: absolute; top: 0; bottom: 0; left: 0; width: 3px; background: var(--crimson); z-index: 2; transform-origin: top; animation: spine-enter 1.4s cubic-bezier(.4,0,.2,1) both; }
+    @keyframes spine-enter { from{transform:scaleY(0)} to{transform:scaleY(1)} }
+    .cover-bg { position: absolute; inset: 0; z-index: 0; background: linear-gradient(180deg,rgba(192,57,43,.04) 0%,transparent 55%), repeating-linear-gradient(0deg,transparent,transparent 79px,rgba(255,255,255,.012) 80px), repeating-linear-gradient(90deg,transparent,transparent 79px,rgba(255,255,255,.012) 80px); }
+    .cover-content { position: relative; z-index: 3; max-width: var(--wide); margin-inline: auto; width: 100%; }
+    .cover-meta { font-family: var(--mono); font-size: 0.7rem; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-3); margin-bottom: clamp(2rem,5vw,3.5rem); animation: fade-up .7s .2s ease both; }
+    .cover-meta span { color: var(--crimson); }
+    .cover-eyebrow { font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--crimson); margin-bottom: 1.5rem; animation: fade-up .7s .3s ease both; }
+    .cover-title { font-family: var(--serif); font-size: clamp(3rem,10vw,7.5rem); font-weight: 900; line-height: 0.95; letter-spacing: -0.03em; color: var(--text); margin-bottom: 0.5rem; animation: fade-up .7s .4s ease both; }
+    .cover-title .em { color: var(--crimson); font-style: italic; font-weight: 700; }
+    .cover-subtitle { font-family: var(--serif); font-style: italic; font-size: clamp(1rem,2.5vw,1.4rem); font-weight: 300; color: var(--text-2); margin-bottom: clamp(2.5rem,6vw,4rem); animation: fade-up .7s .5s ease both; }
+    .cover-rule { width: 60px; height: 1px; background: var(--border-hi); margin-bottom: 2rem; animation: fade-up .7s .55s ease both; }
+    .cover-desc { font-family: var(--body); font-size: clamp(0.9rem,1.8vw,1.05rem); color: var(--text-2); max-width: 520px; line-height: 1.75; animation: fade-up .7s .6s ease both; }
+    .cover-stats { display: flex; flex-wrap: wrap; gap: 2rem; margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--border); animation: fade-up .7s .7s ease both; }
+    .cover-stat-val { font-family: var(--serif); font-size: 1.5rem; font-weight: 700; color: var(--text); display: block; line-height: 1; }
+    .cover-stat-label { font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-3); display: block; margin-top: 0.3rem; }
+    .cover-scroll { position: absolute; bottom: 2.5rem; right: clamp(1rem,5vw,2rem); z-index: 3; display: flex; flex-direction: column; align-items: center; gap: 0.4rem; font-family: var(--mono); font-size: 0.62rem; color: var(--text-3); letter-spacing: 0.1em; text-transform: uppercase; animation: fade-up 1s 1.2s ease both; }
+    .cover-scroll svg { animation: bob 2s ease-in-out infinite; }
+    @keyframes bob { 0%,100%{transform:translateY(0)} 50%{transform:translateY(5px)} }
+    @keyframes fade-up { from{opacity:0;transform:translateY(18px)} to{opacity:1;transform:translateY(0)} }
+
+    /* LISTEN PLATE */
+    .listen-grid { display: grid; grid-template-columns: minmax(220px, 280px) minmax(0,1fr); gap: clamp(1.5rem,4vw,2.75rem); margin-block: clamp(2rem,5vw,3rem) clamp(1rem,3vw,2rem); }
+    .listen-left { display: flex; flex-direction: column; gap: 1.15rem; }
+    .listen-cover { position: relative; border: 1px solid var(--border); border-radius: 4px; overflow: hidden; background: var(--paper); box-shadow: 0 18px 44px rgba(0,0,0,.5); }
+    .listen-cover img { display: block; width: 100%; height: auto; }
+    .is-playing .listen-cover img { animation: cover-breathe 5.5s ease-in-out infinite; }
+    @keyframes cover-breathe { 0%,100% { transform: scale(1); } 50% { transform: scale(1.02); } }
+    .listen-cover-play { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; border: none; cursor: pointer; width: 100%; background: linear-gradient(180deg, rgba(10,10,12,.05) 40%, rgba(10,10,12,.74)); transition: opacity var(--tr), background var(--tr); }
+    .listen-cover-play:hover { background: linear-gradient(180deg, rgba(192,57,43,.08) 40%, rgba(10,10,12,.82)); }
+    .is-playing .listen-cover-play { opacity: 0; pointer-events: none; }
+    .play-btn { width: 56px; height: 56px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--text); background: rgba(10,10,12,.55); border: 1px solid rgba(237,232,223,.4); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); transition: transform var(--tr), border-color var(--tr), background var(--tr), box-shadow var(--tr); }
+    .play-btn svg { margin-left: 2px; }
+    .listen-cover-play:hover .play-btn { transform: scale(1.08); border-color: var(--crimson); background: rgba(192,57,43,.32); box-shadow: 0 12px 32px rgba(192,57,43,.35); }
+    .listen-cover-meta { font-family: var(--mono); font-size: .66rem; letter-spacing: .1em; text-transform: uppercase; color: var(--text-3); line-height: 2.1; }
+    .listen-cover-meta b { color: var(--text); font-weight: 500; }
+    .listen-cover-meta .sep { color: var(--crimson); }
+    .listen-links { display: flex; flex-wrap: wrap; gap: .5rem; }
+    .listen-link { display: inline-flex; align-items: center; gap: .45rem; font-family: var(--mono); font-size: .64rem; font-weight: 500; letter-spacing: .09em; text-transform: uppercase; color: var(--text-2); border: 1px solid var(--border-hi); border-radius: 3px; padding: .5rem .75rem; transition: color var(--tr), border-color var(--tr), background var(--tr); }
+    .listen-link:hover { color: var(--text); border-color: var(--crimson); background: var(--crimson-dim); }
+    .listen-link svg { flex-shrink: 0; }
+    .listen-right { display: flex; flex-direction: column; gap: 1.1rem; min-width: 0; }
+    .player-shell { border: 1px solid var(--border); border-radius: 4px; background: var(--surface); overflow: hidden; }
+    .player-head { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: .55rem .6rem .55rem 1rem; border-bottom: 1px solid var(--border); background: var(--paper); }
+    .player-title { display: flex; align-items: center; gap: .55rem; font-family: var(--mono); font-size: .62rem; font-weight: 500; letter-spacing: .12em; text-transform: uppercase; color: var(--text-3); min-width: 0; }
+    .player-title .np { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; transition: color var(--tr); }
+    .player-title .live-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--crimson); flex-shrink: 0; opacity: 0; transition: opacity var(--tr); }
+    .player-title.playing .np { color: var(--text-2); }
+    .player-title.playing .live-dot { opacity: 1; animation: pulse-dot 1.4s ease-in-out infinite; }
+    .ptabs { display: flex; gap: .3rem; flex-shrink: 0; }
+    .ptab { font-family: var(--mono); font-size: .6rem; font-weight: 500; letter-spacing: .1em; text-transform: uppercase; color: var(--text-3); background: none; border: 1px solid var(--border); border-radius: 3px; padding: .32rem .62rem; cursor: pointer; transition: color var(--tr), border-color var(--tr), background var(--tr); }
+    .ptab:hover { color: var(--text); border-color: var(--border-hi); }
+    .ptab.active { color: var(--crimson); border-color: rgba(192,57,43,.35); background: var(--crimson-dim); }
+    .player-stage { background: #050507; }
+    .player-pane { display: none; }
+    .player-pane.active { display: block; }
+    #pane-bandcamp iframe { display: block; width: 100%; height: 240px; border: 0; }
+    #pane-youtube { aspect-ratio: 16 / 9; }
+    #pane-youtube iframe { display: block; width: 100%; height: 100%; border: 0; }
+    .player-facade { min-height: 240px; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1.1rem; padding: 2.2rem 1.4rem; text-align: center; background:
+      radial-gradient(58% 100% at 50% 118%, rgba(192,57,43,.14), transparent 70%),
+      repeating-linear-gradient(0deg, transparent 0 79px, rgba(255,255,255,.014) 79px 80px),
+      repeating-linear-gradient(90deg, transparent 0 79px, rgba(255,255,255,.014) 79px 80px); }
+    .facade-btn { display: inline-flex; align-items: center; gap: .6rem; font-family: var(--mono); font-size: .7rem; font-weight: 500; letter-spacing: .13em; text-transform: uppercase; color: var(--text); background: var(--crimson-dim); border: 1px solid rgba(192,57,43,.4); border-radius: 3px; padding: .85rem 1.5rem; cursor: pointer; transition: transform var(--tr), background var(--tr), border-color var(--tr), box-shadow var(--tr); }
+    .facade-btn:hover { background: rgba(192,57,43,.24); border-color: var(--crimson); transform: translateY(-1px); box-shadow: 0 12px 30px rgba(192,57,43,.2); }
+    .facade-btn svg { color: var(--crimson); }
+    .facade-note { font-family: var(--mono); font-size: .58rem; letter-spacing: .1em; text-transform: uppercase; color: var(--text-3); line-height: 2; max-width: 400px; }
+    .tracklist { list-style: none; border: 1px solid var(--border); border-radius: 4px; overflow: hidden; background: var(--surface); }
+    .tracklist li + li { border-top: 1px solid var(--border); }
+    .track { display: grid; grid-template-columns: 2.2rem minmax(0,1fr) auto auto; align-items: center; gap: .9rem; width: 100%; text-align: left; background: none; border: none; padding: .72rem .95rem .72rem .85rem; cursor: pointer; font-family: var(--mono); transition: background var(--tr); }
+    .track:hover { background: var(--paper); }
+    .track:focus-visible, .ptab:focus-visible, .facade-btn:focus-visible, .text-btn:focus-visible { outline: 2px solid var(--crimson); outline-offset: -2px; }
+    .track-num { font-size: .68rem; color: var(--crimson); opacity: .6; letter-spacing: .05em; transition: opacity var(--tr); }
+    .track-name { font-family: var(--body); font-size: .92rem; color: var(--text-2); line-height: 1.45; transition: color var(--tr); }
+    .track:hover .track-name { color: var(--text); }
+    .track-dur { font-size: .64rem; color: var(--text-3); letter-spacing: .06em; }
+    .track-eq { display: flex; align-items: flex-end; gap: 2px; width: 15px; height: 13px; opacity: 0; transition: opacity var(--tr); }
+    .track-eq i { width: 3px; height: 30%; background: var(--crimson); border-radius: 1px; }
+    .track.playing { background: var(--crimson-dim); }
+    .track.playing .track-name { color: var(--text); }
+    .track.playing .track-num { opacity: 1; }
+    .track.playing .track-eq { opacity: 1; }
+    .track.playing .track-eq i { animation: eq-bounce .9s ease-in-out infinite; }
+    .track.playing .track-eq i:nth-child(2) { animation-delay: .16s; }
+    .track.playing .track-eq i:nth-child(3) { animation-delay: .32s; }
+    @keyframes eq-bounce { 0%,100% { height: 28%; } 50% { height: 100%; } }
+    .listen-note { max-width: var(--col); font-family: var(--mono); font-size: .72rem; color: var(--text-3); line-height: 2.1; letter-spacing: .04em; }
+    .text-btn { background: none; border: none; padding: 0; font: inherit; color: var(--crimson); cursor: pointer; border-bottom: 1px solid rgba(192,57,43,.3); transition: color var(--tr), border-color var(--tr); }
+    .text-btn:hover { color: #e04c3a; border-color: #e04c3a; }
+    a.cover-stat-link { border: none; color: inherit; transition: opacity var(--tr); }
+    a.cover-stat-link:hover .cover-stat-val { color: var(--crimson); }
+    @media (max-width: 760px) {
+      .listen-grid { grid-template-columns: 1fr; }
+      .listen-cover { max-width: 320px; }
+    }
+    @media (max-width: 480px) {
+      .track { grid-template-columns: 1.8rem minmax(0,1fr) auto; gap: .6rem; padding: .68rem .7rem .68rem .75rem; }
+      .track-eq { display: none; }
+    }
+
+    /* LAYOUT */
+    .publication { max-width: var(--wide); margin-inline: auto; padding-inline: clamp(1rem,5vw,2rem); }
+
+    /* CHAPTER HEAD */
+    .chapter-head { padding: clamp(3.5rem,8vw,6rem) 0 clamp(2rem,5vw,3rem); border-bottom: 1px solid var(--border); position: relative; }
+    .chapter-head::before { content:''; position:absolute; left:calc(-1 * clamp(1rem,5vw,2rem)); top:0; bottom:0; width:2px; background:var(--crimson); opacity:0; transition:opacity 0.5s ease; }
+    .chapter-head.vis::before { opacity:1; }
+    .ch-label { font-family: var(--mono); font-size: 0.68rem; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase; color: var(--crimson); margin-bottom: 1rem; }
+    .ch-num { font-family: var(--serif); font-style: italic; font-weight: 400; font-size: clamp(4rem,10vw,9rem); color: var(--border-hi); line-height: 0.85; letter-spacing: -0.04em; margin-bottom: 0.5rem; user-select: none; }
+    .ch-title { font-family: var(--serif); font-weight: 700; font-size: clamp(1.6rem,4vw,2.9rem); color: var(--text); line-height: 1.15; letter-spacing: -0.02em; }
+    .ch-title em { color: var(--crimson); font-style: italic; font-weight: 400; }
+    .ch-sub { font-family: var(--body); font-style: italic; font-weight: 300; font-size: clamp(0.9rem,2vw,1.1rem); color: var(--text-2); margin-top: 0.75rem; max-width: 560px; }
+
+    /* BODY TEXT */
+    .body-text { max-width: var(--col); padding-block: clamp(2rem,5vw,3.5rem); }
+    .body-text p { font-size: clamp(0.95rem,1.8vw,1.05rem); color: var(--text-2); line-height: 1.85; margin-bottom: 1.5em; }
+    .body-text p:last-child { margin-bottom: 0; }
+    .body-text p strong { color: var(--text); }
+    .body-text h3 { font-family: var(--serif); font-weight: 600; font-size: clamp(1.1rem,2.5vw,1.35rem); color: var(--text); margin-top: 2.5rem; margin-bottom: 0.75rem; letter-spacing: -0.01em; }
+    .body-text h4 { font-family: var(--mono); font-size: 0.72rem; font-weight: 500; letter-spacing: 0.13em; text-transform: uppercase; color: var(--crimson); margin-top: 2rem; margin-bottom: 0.6rem; }
+
+    /* SECTION DIVIDER */
+    .section-div { border: none; border-top: 1px solid var(--border); margin-block: 0; }
+
+    /* PULL QUOTE */
+    .pull-quote { border-left: 3px solid var(--crimson); padding: 1.25rem 0 1.25rem 1.75rem; margin: 2.5rem 0; max-width: var(--col); }
+    .pull-quote p { font-family: var(--serif); font-style: italic; font-size: clamp(1.05rem,2.5vw,1.3rem); font-weight: 400; color: var(--text); line-height: 1.55; margin: 0; }
+    .pull-quote cite { display: block; margin-top: 0.75rem; font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-3); font-style: normal; }
+
+    /* CALLOUT */
+    .callout { background: var(--surface); border: 1px solid var(--border); border-radius: 4px; padding: 1.25rem 1.5rem; margin: 2rem 0; max-width: var(--col); }
+    .callout-label { font-family: var(--mono); font-size: 0.65rem; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-3); margin-bottom: 0.6rem; display: flex; align-items: center; gap: 0.5rem; }
+    .callout-label::before { content:''; width:16px; height:1px; background:var(--border-hi); }
+    .callout p { font-size: 0.9rem; color: var(--text-2); line-height: 1.75; margin: 0; }
+    .callout p strong { color: var(--text); }
+    .callout.highlight { border-left: 3px solid var(--crimson); background: var(--crimson-dim); }
+    .callout.highlight .callout-label { color: var(--crimson); }
+
+    /* PRINCIPLES */
+    .principles { max-width: var(--col); display: flex; flex-direction: column; border: 1px solid var(--border); border-radius: 4px; overflow: hidden; margin: 2rem 0; }
+    .principle { display: grid; grid-template-columns: 48px 1fr; background: var(--surface); }
+    .principle + .principle { border-top: 1px solid var(--border); }
+    .principle:hover { background: var(--paper); }
+    .principle-n { display: flex; align-items: flex-start; justify-content: center; padding-top: 1.35rem; font-family: var(--serif); font-style: italic; font-size: 1.5rem; color: var(--crimson); opacity: 0.4; border-right: 1px solid var(--border); }
+    .principle-body { padding: 1.1rem 1.35rem; }
+    .principle-rule { font-family: var(--body); font-size: 0.95rem; font-weight: 600; color: var(--text); margin-bottom: 0.35rem; line-height: 1.4; }
+    .principle-detail { font-size: 0.875rem; color: var(--text-2); line-height: 1.75; }
+
+    /* TABLE */
+    .table-wrap { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; border: 1px solid var(--border); border-radius: 4px; margin: 2rem 0; scrollbar-width: thin; scrollbar-color: var(--border) transparent; }
+    .table-wrap::-webkit-scrollbar { height: 4px; }
+    .table-wrap::-webkit-scrollbar-thumb { background: var(--border-hi); }
+    table { width: 100%; min-width: 520px; border-collapse: collapse; font-size: 0.875rem; }
+    thead { background: var(--surface); border-bottom: 1px solid var(--border); }
+    th { padding: 0.7rem 1rem; text-align: left; font-family: var(--mono); font-size: 0.65rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-3); white-space: nowrap; }
+    td { padding: 0.7rem 1rem; border-bottom: 1px solid var(--border); color: var(--text-2); vertical-align: top; line-height: 1.65; }
+    tbody tr:last-child td { border-bottom: none; }
+    tbody tr:hover td { background: rgba(255,255,255,.015); }
+    td strong { color: var(--text); }
+    td:first-child { color: var(--crimson); font-family: var(--mono); font-size: 0.8rem; }
+
+    /* FLOW DIAGRAM */
+    .flow { display: flex; align-items: center; flex-wrap: wrap; gap: 0; margin: 2rem 0; max-width: var(--col); }
+    .flow-step { background: var(--surface); border: 1px solid var(--border); border-radius: 3px; padding: 0.6rem 1rem; font-family: var(--mono); font-size: 0.72rem; font-weight: 500; color: var(--text-2); letter-spacing: 0.04em; white-space: nowrap; }
+    .flow-step.accent { background: var(--crimson-dim); border-color: rgba(192,57,43,.3); color: var(--text); }
+    .flow-arrow { font-family: var(--mono); font-size: 0.75rem; color: var(--border-hi); padding: 0 0.5rem; }
+    .flow-label { width: 100%; margin-top: 0.5rem; font-family: var(--mono); font-size: 0.6rem; color: var(--text-3); letter-spacing: 0.1em; text-transform: uppercase; }
+
+    /* CHECKLIST */
+    .checklist { list-style: none; max-width: var(--col); border: 1px solid var(--border); border-radius: 4px; overflow: hidden; margin: 2rem 0; }
+    .checklist li { display: flex; align-items: flex-start; gap: 0.75rem; padding: 0.8rem 1.1rem; border-bottom: 1px solid var(--border); font-size: 0.9rem; color: var(--text-2); line-height: 1.6; background: var(--surface); }
+    .checklist li:last-child { border-bottom: none; }
+    .checklist-mark { flex-shrink: 0; width: 16px; height: 16px; border-radius: 2px; background: rgba(192,57,43,.15); border: 1px solid rgba(192,57,43,.3); display: flex; align-items: center; justify-content: center; margin-top: 2px; }
+    .checklist-mark svg { color: var(--crimson); }
+    .checklist-status { margin-left: auto; flex-shrink: 0; font-family: var(--mono); font-size: 0.65rem; color: var(--crimson); letter-spacing: 0.08em; }
+
+    /* LESSON CARDS */
+    .lessons-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(min(100%,280px),1fr)); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: 4px; overflow: hidden; margin: 2rem 0; }
+    .lesson-card { background: var(--surface); padding: 1.35rem; transition: background var(--tr); }
+    .lesson-card:hover { background: var(--paper); }
+    .lesson-num { font-family: var(--serif); font-style: italic; font-size: 1.8rem; color: var(--border-hi); line-height: 1; margin-bottom: 0.6rem; }
+    .lesson-title { font-family: var(--body); font-size: 0.9rem; font-weight: 600; color: var(--text); margin-bottom: 0.5rem; line-height: 1.35; }
+    .lesson-body { font-size: 0.85rem; color: var(--text-2); line-height: 1.7; }
+
+    /* LIMITATIONS */
+    .limitation { display: flex; gap: 0.9rem; align-items: flex-start; padding: 1rem 0; border-bottom: 1px solid var(--border); max-width: var(--col); }
+    .limitation:last-child { border-bottom: none; }
+    .limitation-icon { flex-shrink: 0; margin-top: 2px; }
+    .limitation-icon svg { color: var(--crimson); }
+    .limitation-title { font-family: var(--body); font-size: 0.95rem; font-weight: 600; color: var(--text); margin-bottom: 0.3rem; }
+    .limitation-text { font-size: 0.88rem; color: var(--text-2); line-height: 1.7; }
+
+    /* APPENDIX */
+    .appendix-block { max-width: var(--col); margin-bottom: 2.5rem; }
+    .appendix-block h3 { font-family: var(--mono); font-size: 0.7rem; font-weight: 500; letter-spacing: 0.13em; text-transform: uppercase; color: var(--text-3); margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border); }
+    .glossary-entry { margin-bottom: 1.25rem; max-width: var(--col); }
+    .glossary-term { font-family: var(--mono); font-size: 0.8rem; color: var(--crimson); font-weight: 500; margin-bottom: 0.25rem; }
+    .glossary-def { font-size: 0.9rem; color: var(--text-2); line-height: 1.7; }
+
+    /* FOOTER */
+    .pub-footer { border-top: 1px solid var(--border); padding-block: 3rem 4rem; margin-top: 4rem; }
+    .pub-footer-inner { max-width: var(--wide); margin-inline: auto; padding-inline: clamp(1rem,5vw,2rem); display: flex; flex-wrap: wrap; gap: 2rem; justify-content: space-between; }
+    .pub-footer-brand { font-family: var(--serif); font-size: 1.2rem; font-weight: 700; color: var(--text); margin-bottom: 0.35rem; }
+    .pub-footer-sub { font-family: var(--mono); font-size: 0.65rem; color: var(--text-3); letter-spacing: 0.1em; text-transform: uppercase; }
+    .pub-footer-meta { font-family: var(--mono); font-size: 0.65rem; color: var(--text-3); line-height: 2; letter-spacing: 0.07em; text-align: right; }
+
+    /* BACK TO TOP */
+    .back-top { position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 90; width: 38px; height: 38px; border-radius: 4px; background: var(--surface); border: 1px solid var(--border-hi); display: flex; align-items: center; justify-content: center; cursor: pointer; opacity: 0; pointer-events: none; transform: translateY(6px); transition: opacity .25s ease, transform .25s ease, border-color var(--tr); }
+    .back-top.visible { opacity: 1; pointer-events: auto; transform: translateY(0); }
+    .back-top:hover { border-color: var(--crimson); }
+    .back-top svg { color: var(--text-2); }
+    .back-top:hover svg { color: var(--crimson); }
+
+    /* SCROLL REVEAL */
+    .reveal { opacity: 0; transform: translateY(14px); transition: opacity .5s ease, transform .5s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    code { font-family: var(--mono); font-size: 0.82em; background: rgba(255,255,255,.05); border: 1px solid var(--border); color: var(--text); padding: 1px 6px; border-radius: 3px; }
+
+    @media (max-width: 480px) {
+      .cover-stats { gap: 1.25rem; }
+      .flow { flex-direction: column; align-items: flex-start; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { transition: none !important; animation: none !important; }
+      html { scroll-behavior: auto; }
+      .reveal { opacity: 1; transform: none; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="reading-bar" id="readingBar"></div>
+
+<button class="back-top" id="backTop" aria-label="Back to top" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="18 15 12 9 6 15"/></svg>
+</button>
+
+<!-- TOP NAV -->
+<header class="topnav" id="topnav">
+  <div class="topnav-inner">
+    <a class="topnav-brand" href="#">
+      <span class="dot"></span>
+      NM Studio &nbsp;/&nbsp; Documentation Library
+    </a>
+    <button class="nav-toggle" id="navToggle" aria-label="Chapters" aria-expanded="false">
+      <span class="b"></span><span class="b"></span><span class="b"></span>
+    </button>
+    <div class="topnav-right">v1.2 &nbsp;·&nbsp; July 2026</div>
+  </div>
+  <nav class="chapter-nav" id="chapterNav" aria-label="Chapters">
+    <a href="#listen"       data-s="listen">Listen</a>
+    <a href="#preface"       data-s="preface">Preface</a>
+    <a href="#ch-intro"      data-s="ch-intro">Introduction</a>
+    <a href="#ch-why"        data-s="ch-why">Why AI + Metal</a>
+    <a href="#ch-research"   data-s="ch-research">Research</a>
+    <a href="#ch-workflow"   data-s="ch-workflow">Workflow</a>
+    <a href="#ch-prompts"    data-s="ch-prompts">Prompts</a>
+    <a href="#ch-lyrics"     data-s="ch-lyrics">Lyrics</a>
+    <a href="#ch-composition" data-s="ch-composition">Composition</a>
+    <a href="#ch-arrangement" data-s="ch-arrangement">Arrangement</a>
+    <a href="#ch-sound"      data-s="ch-sound">Sound Design</a>
+    <a href="#ch-iteration"  data-s="ch-iteration">Iteration</a>
+    <a href="#ch-visual"     data-s="ch-visual">Visual Identity</a>
+    <a href="#ch-artwork"    data-s="ch-artwork">Artwork</a>
+    <a href="#ch-publishing" data-s="ch-publishing">Publishing</a>
+    <a href="#ch-lessons"    data-s="ch-lessons">Lessons</a>
+    <a href="#ch-limits"     data-s="ch-limits">Limitations</a>
+    <a href="#ch-replace"    data-s="ch-replace">AI vs Human</a>
+    <a href="#ch-future"     data-s="ch-future">Future</a>
+    <a href="#conclusion"    data-s="conclusion">Conclusion</a>
+    <a href="#appendix"      data-s="appendix">Appendix</a>
+  </nav>
+</header>
+
+<!-- COVER -->
+<section class="cover" id="cover">
+  <div class="cover-bg"></div>
+  <div class="cover-grain"></div>
+  <div class="cover-spine"></div>
+  <div class="cover-content">
+    <div class="cover-meta">NM Studio <span>·</span> Documentation Library <span>·</span> Archival Volume II</div>
+    <div class="cover-eyebrow">Editorial Publication</div>
+    <h1 class="cover-title">Metal AI<br/><span class="em">Music</span></h1>
+    <p class="cover-subtitle">No Limits — Where heavy music meets artificial intelligence</p>
+    <div class="cover-rule"></div>
+    <p class="cover-desc">An experimental creative practice exploring the intersection of metal composition, AI-assisted production, visual identity, and independent digital publishing. A case study in using constraint as creative fuel.</p>
+    <div class="cover-stats">
+      <a class="cover-stat cover-stat-link" href="#listen" aria-label="Nine tracks — jump to the listening section"><span class="cover-stat-val">9</span><span class="cover-stat-label">Tracks</span></a>
+      <div class="cover-stat"><span class="cover-stat-val">20</span><span class="cover-stat-label">Chapters</span></div>
+      <div class="cover-stat"><span class="cover-stat-val">v1.2</span><span class="cover-stat-label">Document</span></div>
+      <div class="cover-stat"><span class="cover-stat-val">2026</span><span class="cover-stat-label">Published</span></div>
+    </div>
+  </div>
+  <div class="cover-scroll">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+    Read
+  </div>
+</section>
+
+<!-- PUBLICATION BODY -->
+<div class="publication">
+
+  <!-- LISTEN — the record plate -->
+  <div id="listen">
+    <div class="chapter-head reveal">
+      <div class="ch-label">The Record</div>
+      <div class="ch-title">Listen — <em>Fighting Death</em></div>
+      <div class="ch-sub">The nine-track album this document records — streaming from Bandcamp or YouTube. Press play, or pick any track.</div>
+    </div>
+
+    <div class="listen-grid reveal">
+
+      <div class="listen-left">
+        <figure class="listen-cover">
+          <img src="assets/cover.jpg" alt="Fighting Death — album artwork" width="640" height="640"/>
+          <button class="listen-cover-play" id="coverPlay" aria-label="Play the full album on Bandcamp">
+            <span class="play-btn" aria-hidden="true">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M8 5.5v13l11-6.5z"/></svg>
+            </span>
+          </button>
+        </figure>
+        <div class="listen-cover-meta">
+          <b>Fighting Death</b> <span class="sep">·</span> Limon<br/>
+          9 tracks <span class="sep">·</span> 35 min <span class="sep">·</span> released Apr 21, 2025
+        </div>
+        <div class="listen-links">
+          <a class="listen-link" href="https://limoon.bandcamp.com/album/fighting-death" target="_blank" rel="noopener">
+            Bandcamp
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M7 17L17 7M9 7h8v8"/></svg>
+          </a>
+          <a class="listen-link" href="https://www.youtube.com/playlist?list=PLE7xqQB69sf6MtY6PxdStT8oVcuOkUtPK" target="_blank" rel="noopener">
+            YouTube playlist
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M7 17L17 7M9 7h8v8"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <div class="listen-right">
+        <div class="player-shell">
+          <div class="player-head">
+            <div class="player-title" id="playerTitle">
+              <span class="live-dot" aria-hidden="true"></span>
+              <span class="np" id="playerNow">Fighting Death — full album</span>
+            </div>
+            <div class="ptabs" role="group" aria-label="Streaming source">
+              <button class="ptab active" id="tab-bandcamp" aria-pressed="true">Bandcamp</button>
+              <button class="ptab" id="tab-youtube" aria-pressed="false">YouTube</button>
+            </div>
+          </div>
+          <div class="player-stage">
+            <div class="player-pane active" id="pane-bandcamp">
+              <div class="player-facade">
+                <button class="facade-btn" id="facadeBandcamp">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13l11-6.5z"/></svg>
+                  Play on Bandcamp
+                </button>
+                <p class="facade-note">Official album player — loads on demand, so no third-party code runs until you press play.</p>
+              </div>
+            </div>
+            <div class="player-pane" id="pane-youtube">
+              <div class="player-facade">
+                <button class="facade-btn" id="facadeYouTube">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13l11-6.5z"/></svg>
+                  Listen on YouTube
+                </button>
+                <p class="facade-note">Playlist, full-album mix and track videos — privacy-enhanced player (youtube-nocookie.com), loaded on demand.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <ol class="tracklist" aria-label="Fighting Death — tracklist">
+          <li><button class="track" data-yt="BRk5YQpIe58" data-np="Now playing — 01 · To face the death"><span class="track-num">01</span><span class="track-name">To face the death</span><span class="track-eq" aria-hidden="true"><i></i><i></i><i></i></span><span class="track-dur">03:59</span></button></li>
+          <li><button class="track" data-yt="m0ewrROjTzQ" data-np="Now playing — 02 · Where are you?"><span class="track-num">02</span><span class="track-name">Where are you?</span><span class="track-eq" aria-hidden="true"><i></i><i></i><i></i></span><span class="track-dur">04:00</span></button></li>
+          <li><button class="track" data-yt="YgxAkEyuvxo" data-np="Now playing — 03 · Defeating fear"><span class="track-num">03</span><span class="track-name">Defeating fear</span><span class="track-eq" aria-hidden="true"><i></i><i></i><i></i></span><span class="track-dur">04:00</span></button></li>
+          <li><button class="track" data-yt="CuAb97rGXdg" data-np="Now playing — 04 · Final walk"><span class="track-num">04</span><span class="track-name">Final walk</span><span class="track-eq" aria-hidden="true"><i></i><i></i><i></i></span><span class="track-dur">03:07</span></button></li>
+          <li><button class="track" data-yt="KCgrtutNA-s" data-np="Now playing — 05 · Facing the end"><span class="track-num">05</span><span class="track-name">Facing the end</span><span class="track-eq" aria-hidden="true"><i></i><i></i><i></i></span><span class="track-dur">03:59</span></button></li>
+          <li><button class="track" data-yt="eur-0zGfgOI" data-np="Now playing — 06 · I was never ready"><span class="track-num">06</span><span class="track-name">I was never ready</span><span class="track-eq" aria-hidden="true"><i></i><i></i><i></i></span><span class="track-dur">03:22</span></button></li>
+          <li><button class="track" data-yt="St8L1uUvPFM" data-np="Now playing — 07 · Despair, what have i done"><span class="track-num">07</span><span class="track-name">Despair, what have i done</span><span class="track-eq" aria-hidden="true"><i></i><i></i><i></i></span><span class="track-dur">03:59</span></button></li>
+          <li><button class="track" data-yt="2RQgfAgJ5Ik" data-np="Now playing — 08 · Pride of Ashes"><span class="track-num">08</span><span class="track-name">Pride of Ashes</span><span class="track-eq" aria-hidden="true"><i></i><i></i><i></i></span><span class="track-dur">04:00</span></button></li>
+          <li><button class="track" data-yt="m7xASmvsFvc" data-np="Now playing — 09 · Death is fear!"><span class="track-num">09</span><span class="track-name">Death is fear!</span><span class="track-eq" aria-hidden="true"><i></i><i></i><i></i></span><span class="track-dur">04:00</span></button></li>
+        </ol>
+
+        <p class="listen-note">Track playback streams via YouTube’s privacy-enhanced player. Prefer one continuous take? <button class="text-btn" data-yt="GYKhA5-4hQ4" data-np="Now playing — Fighting Death · full album mix (34:27)">Play the full-album mix — 34:27</button>. The record also lives on <a href="https://limoon.bandcamp.com/album/fighting-death" target="_blank" rel="noopener">Bandcamp</a>.</p>
+      </div>
+
+    </div>
+  </div>
+
+  <hr class="section-div"/>
+
+  <!-- PREFACE -->
+  <div id="preface">
+    <div class="chapter-head reveal">
+      <div class="ch-label">Preface</div>
+      <div class="ch-title">The Philosophy of Documentation</div>
+      <div class="ch-sub">Why this record exists, and what it is not.</div>
+    </div>
+    <div class="body-text reveal">
+      <p>This publication does not exist to celebrate a finished album. It exists to document a process — specifically, the process of building something complete under conditions that discourage completion.</p>
+      <p>The project at the centre of this record is a nine-track metal album produced almost entirely using AI-assisted tools, running on a mid-range Android device, by a single independent creator operating without studio access, professional equipment, or institutional support. The album was conceived, composed, arranged, visually branded, and distributed across a span of weeks.</p>
+      <p>What follows is an honest reconstruction of that process. Not a tutorial. Not a manifesto. A record of decisions, reversals, failures, and forward motion — the kind of documentation that is only possible once the dust has settled and the work has shipped.</p>
+      <div class="pull-quote">
+        <p>Documentation serves as the ultimate countermeasure against drift. By capturing the exact mechanics of systemic adjustments, technical failures, and structural transitions, we build a persistent infrastructure that functions independent of passing emotional cycles.</p>
+        <cite>— NM Studio, System Manifesto (v1.0)</cite>
+      </div>
+      <p>The intended audience is anyone attempting creative work at the intersection of technology and art — designers who build things alone, musicians who code, engineers who make, students who have not yet been told what they cannot do. The hope is that someone reads this six months from now, or six years, and finds the underlying logic still useful even if the specific tools have changed entirely.</p>
+      <p>The central argument is stated plainly: <strong>artificial intelligence should amplify human creativity — not replace it.</strong> Every decision in this project was made by a human being. The AI was a collaborator, a mirror, and an instrument. It was never the author.</p>
+    </div>
+  </div>
+
+  <hr class="section-div"/>
+
+  <!-- CH 1 -->
+  <div id="ch-intro">
+    <div class="chapter-head reveal">
+      <div class="ch-label">Chapter One</div>
+      <div class="ch-num">01</div>
+      <div class="ch-title">Introduction — <em>The Original Question</em></div>
+      <div class="ch-sub">What started this, and how the scope evolved.</div>
+    </div>
+    <div class="body-text reveal">
+      <p>The question that started this project was not a technical one. It was an aesthetic one: <strong>can heavy music — music built on weight, aggression, and emotional extremity — survive contact with artificial intelligence without becoming hollow?</strong></p>
+      <p>Metal, as a genre, has always defined itself partly through authenticity. The distortion is real. The anger is real. The physical performance — the drumming, the screaming, the precise guitar technique — is earned through years of bodily practice. The concern, legitimate and widely shared, is that algorithmically generated music strips away everything that gives the form its meaning.</p>
+      <p>This project began as an experiment to test that concern directly. Not to refute it, but to understand it through practice. The hypothesis was not that AI could replace the soul of metal. The hypothesis was that a human creator, using AI as a tool, could produce something with genuine aesthetic intent — something that could stand beside, if not inside, the tradition.</p>
+      <div class="callout">
+        <div class="callout-label">Project Parameters</div>
+        <p>A nine-track conceptual album with unified dark-fantasy thematic architecture, produced entirely on a Redmi 12 running HyperOS 2, using AI-assisted generation tools for composition, lyric development, and visual identity. No studio. No professional hardware. No team.</p>
+      </div>
+      <p>The scope evolved considerably over the course of production. What began as a loose collection of sonic experiments became a structured conceptual project with recurring themes, a visual language, and a deliberate publication strategy. That evolution — from experiment to artifact — is itself one of the central subjects of this record.</p>
+    </div>
+  </div>
+
+  <hr class="section-div"/>
+
+  <!-- CH 2 -->
+  <div id="ch-why">
+    <div class="chapter-head reveal">
+      <div class="ch-label">Chapter Two</div>
+      <div class="ch-num">02</div>
+      <div class="ch-title">Why <em>AI and Metal?</em></div>
+      <div class="ch-sub">The logic of an unlikely combination.</div>
+    </div>
+    <div class="body-text reveal">
+      <p>The pairing of artificial intelligence and metal music is, on its surface, absurd. Metal emerged from working-class frustration, from electric guitars played through broken amplifiers, from voices pushed past their physical limits. Its aesthetic is built on texture that cannot be synthesised: tube distortion, the resonance of a drum hit in a particular room, the biological imprecision of a human vocal cord at maximum exertion.</p>
+      <p>And yet the combination is generative precisely because of the tension. The encounter between a tool that processes pattern and a form that resists pattern-reduction produces friction. That friction is where interesting things happen.</p>
+      <h3>What AI brings to heavy music</h3>
+      <p>The practical contributions are concrete. AI-assisted tools can generate compositional scaffolding at a speed no individual composer can match — chord structures, rhythmic frameworks, harmonic ideas that would take weeks to develop through conventional practice. They can model existing genre conventions with enough fidelity to be useful as starting points. They can generate lyric drafts that capture thematic territory without being beholden to a single writer's vocabulary.</p>
+      <p>More importantly for an independent creator working without collaborators: they can function as an intelligent sounding board. The absence of a band, a producer, or a mixing engineer is one of the defining constraints of independent music production. AI tools partially fill that gap — not by replacing the expertise those roles represent, but by offering responsive feedback at any hour, without fatigue, and without interpersonal friction.</p>
+      <h3>What metal brings to AI creative practice</h3>
+      <p>Metal's extreme aesthetic demands force discipline on the AI workflow. A tool that generates competent-but-generic output is insufficient — generic metal sounds like nothing. The genre's conventions are specific enough that failures are immediately audible. This makes it an unusually honest test environment for AI-assisted production: you cannot hide behind pleasant adequacy.</p>
+      <div class="pull-quote">
+        <p>The question was never whether AI could make metal. The question was whether a human, using AI, could make metal that meant something.</p>
+      </div>
+      <p>The combination also forces a clear delineation of what the human creator contributes and what the tool contributes — a delineation that is useful to document, because it maps onto questions that are relevant far beyond this project.</p>
+    </div>
+  </div>
+
+  <hr class="section-div"/>
+
+  <!-- CH 3 -->
+  <div id="ch-research">
+    <div class="chapter-head reveal">
+      <div class="ch-label">Chapter Three</div>
+      <div class="ch-num">03</div>
+      <div class="ch-title">Research and <em>Exploration</em></div>
+      <div class="ch-sub">Mapping the territory before committing to a path.</div>
+    </div>
+    <div class="body-text reveal">
+      <p>Before a single piece of audio was generated, the project required a research phase that was more curatorial than technical. The question was not which tools existed — that landscape is well-documented and changes rapidly — but which tools were appropriate for the specific constraints of this project.</p>
+      <p>The constraints were significant. The production environment was a single mid-range Android device. No desktop DAW. No cloud rendering. No professional plugins. The tools had to be lightweight, mobile-compatible, and either free or low-cost. The workflow had to be manageable by one person without prior professional music production training.</p>
+      <h3>What the research revealed</h3>
+      <p>The most significant finding was not about tools. It was about the existing body of AI-assisted music production. Much of it clusters in two categories: ambient and electronic music, where the algorithmic origin is aesthetically congruent; and novelty content, where the AI origin is the point. Very little serious independent work had been done at the intersection of AI assistance and heavy guitar music.</p>
+      <p>That gap was both a challenge and an opportunity. There were few reference points for what success looked like. But there were also few expectations to manage and few conventions to violate.</p>
+      <div class="callout highlight">
+        <div class="callout-label">Key Research Finding</div>
+        <p>The absence of established precedent in AI-assisted metal production meant the project would need to construct its own quality criteria from scratch, rather than measuring against an existing standard.</p>
+      </div>
+      <h3>The thematic framework</h3>
+      <p>The research phase also established the conceptual architecture of the album. The dark-fantasy thematic territory was chosen deliberately: it provided narrative coherence across tracks, gave the lyrical AI tools sufficient context to generate material with internal consistency, and aligned with metal's established relationship with mythology, mortality, and transformation.</p>
+      <p>Track one, <strong>"To Face You Death,"</strong> was identified early as the project's anchor — the piece that would establish tone, visual language, and production standard for everything that followed.</p>
+    </div>
+  </div>
+
+  <hr class="section-div"/>
+
+  <!-- CH 4 -->
+  <div id="ch-workflow">
+    <div class="chapter-head reveal">
+      <div class="ch-label">Chapter Four</div>
+      <div class="ch-num">04</div>
+      <div class="ch-title">Designing the <em>Creative Workflow</em></div>
+      <div class="ch-sub">Why the system had to be built before the music could be made.</div>
+    </div>
+    <div class="body-text reveal">
+      <p>The first serious failure of the project was the absence of a workflow. The initial impulse was to begin generating immediately — to treat the tools as infinitely available and the output as automatically coherent. That impulse produced chaos within hours.</p>
+      <p>The outputs were disconnected. Tracks had no relationship to each other. Lyrical themes contradicted sonic character. Visual ideas were generated before the audio had any form. The project was producing material without producing an album.</p>
+      <h3>The three-mode operational matrix</h3>
+      <p>The resolution was structural. Three distinct operating modes were defined and enforced as hard rules — not guidelines, but states that could not be blurred without cost.</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Mode</th><th>Primary Objective</th><th>Core Constraint Rule</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Exploration</strong></td><td>Generate unconstrained ideas, variations, and themes</td><td>Strict prohibition on structural refinement or perfectionism</td></tr>
+            <tr><td><strong>Optimization</strong></td><td>Refine the single highest-signal asset option</td><td>Fixed, hard boundaries on iteration cycles</td></tr>
+            <tr><td><strong>Execution</strong></td><td>Freeze configuration states and deploy asset immediately</td><td>Zero final tweaking allowed; force target delivery</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>The mode separation was the single most important structural decision in the project. Without it, every session collapsed into a recursive refinement loop that produced nothing deployable. With it, each session had a defined objective and a defined exit condition.</p>
+      <div class="flow">
+        <div class="flow-step">Exploration Mode</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">Optimization Mode</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step accent">Execution Mode</div>
+        <div class="flow-label">The transition between modes was deliberate and documented — never allowed to blur.</div>
+      </div>
+      <h3>The over-optimization problem</h3>
+      <p>The workflow design also addressed a specific, recurring defect: the tendency to extend refinement cycles past the point of functional improvement. The solution was a hard iteration limit: seven cycles for logic configurations, three cycles for visual layouts. When the limit was reached, the current version was frozen and the session moved to Execution Mode. Done became the baseline requirement, not the fallback.</p>
+    </div>
+  </div>
+
+  <hr class="section-div"/>
+
+  <!-- CH 5 -->
+  <div id="ch-prompts">
+    <div class="chapter-head reveal">
+      <div class="ch-label">Chapter Five</div>
+      <div class="ch-num">05</div>
+      <div class="ch-title">Prompt Engineering <em>Methodology</em></div>
+      <div class="ch-sub">How the questions were built, and why precision mattered.</div>
+    </div>
+    <div class="body-text reveal">
+      <p>Prompt engineering is a misleading term for what the practice actually involves. It suggests a technical skill — a set of formulaic inputs that produce reliable outputs. The reality is closer to directed conversation: the ability to establish context, constrain scope, and calibrate specificity in a way that guides a generative system toward useful territory without over-determining the result.</p>
+      <h4>Phase One — Abstract Input</h4>
+      <p>Early prompts were conceptually rich but structurally vague. Thematic territory was described in broad terms: darkness, transformation, confrontation, mythological scale. The outputs were correspondingly broad — technically competent but undifferentiated. They could have been for any heavy music project, not this one.</p>
+      <h4>Phase Two — Structural Specification</h4>
+      <p>The shift to structural specification changed the output quality substantially. Prompts began to include explicit parameters: tempo range, key signature, subgenre markers, specific instrumentation, lyrical meter, thematic anchors from earlier tracks. The outputs became more coherent and more specific to the project's evolving identity.</p>
+      <h4>Phase Three — Iterative Dialogue</h4>
+      <p>The most productive phase was not the most complex prompt. It was the dialogue — the process of using initial outputs as context for subsequent prompts, building a feedback loop that accumulated specificity over multiple exchanges. The album's thematic vocabulary, visual language, and sonic character emerged from this iterative dialogue rather than from any single prompt.</p>
+      <div class="callout highlight">
+        <div class="callout-label">Core Insight</div>
+        <p><strong>The prompt is not the product.</strong> The product is the accumulated context that emerges from sustained, directed engagement with the tool. A sustained dialogue produces something a single prompt cannot.</p>
+      </div>
+      <h3>Design principles applied to prompting</h3>
+      <div class="principles">
+        <div class="principle">
+          <div class="principle-n">1</div>
+          <div class="principle-body">
+            <div class="principle-rule">Reality Over Mythology</div>
+            <div class="principle-detail">Prompts grounded in specific, concrete parameters produced better outputs than prompts built around abstract emotional intent. "A minor, 160bpm, down-tuned guitar, death metal vocal cadence" outperforms "dark and heavy and brutal."</div>
+          </div>
+        </div>
+        <div class="principle">
+          <div class="principle-n">2</div>
+          <div class="principle-body">
+            <div class="principle-rule">Evidence Over Intuition</div>
+            <div class="principle-detail">When an output was unsatisfactory, the reflex was to trust the instinct that something was wrong. The discipline was to identify specifically what was wrong, expressed in structural terms, before generating a revised prompt.</div>
+          </div>
+        </div>
+        <div class="principle">
+          <div class="principle-n">3</div>
+          <div class="principle-body">
+            <div class="principle-rule">Constraints Create Clarity</div>
+            <div class="principle-detail">Reducing the scope of a prompt — asking for a bridge section rather than a full track, a single verse rather than complete lyrics — consistently produced higher-quality outputs than open-ended generation.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="section-div"/>
+
+  <!-- CH 6 -->
+  <div id="ch-lyrics">
+    <div class="chapter-head reveal">
+      <div class="ch-label">Chapter Six</div>
+      <div class="ch-num">06</div>
+      <div class="ch-title">Writing <em>Lyrics</em></div>
+      <div class="ch-sub">Language as architecture, not decoration.</div>
+    </div>
+    <div class="body-text reveal">
+      <p>Lyric generation was the most contentious part of the AI-assisted workflow — the area where the tension between human intent and machine output was sharpest, and where the ethical questions were most immediate.</p>
+      <p>The starting position was clear: AI-generated lyrics would function as drafts, not finals. The voice of the album was a human voice. The machine's contribution was material — raw vocabulary, structural scaffolding, thematic suggestions — that the human creator then shaped, revised, and claimed.</p>
+      <h3>The dark-fantasy vocabulary</h3>
+      <p>The thematic architecture of the album — confrontation with mortality, mythological transformation, the psychology of extremity — gave the lyric generation tools enough context to produce material with internal consistency. Track one established the central image: direct confrontation with death as a force rather than an event. <em>"To Face You Death"</em> set a tone of agency — the subject is not fleeing or mourning, but standing in confrontation. That posture recurred across the album's thematic arc.</p>
+      <div class="pull-quote">
+        <p>The lyric generation tools produced material at the level of competent genre writing. The work of making it specific — making it this album, not any album — was human work.</p>
+      </div>
+      <h3>Meter, cadence, and the metal vocal</h3>
+      <p>A specific constraint shaped all lyric development: the output had to work as metal vocal performance, which means it had to fit the rhythmic structure of the composition and be physically singable at the intensity the genre demands. This constraint eliminated a significant proportion of AI-generated material — lyrically interesting text that would be metrically or physically unsuitable for performance.</p>
+      <p>The discipline of testing every lyric draft against the compositional rhythm before finalising it was essential and time-consuming. The judgment that something sounds right in the mouth, rather than right on the page, is not something the tools could provide.</p>
+    </div>
+  </div>
+
+  <hr class="section-div"/>
+
+  <!-- CH 7 -->
+  <div id="ch-composition">
+    <div class="chapter-head reveal">
+      <div class="ch-label">Chapter Seven</div>
+      <div class="ch-num">07</div>
+      <div class="ch-title"><em>Composition</em></div>
+      <div class="ch-sub">Building the sonic foundation of each track.</div>
+    </div>
+    <div class="body-text reveal">
+      <p>Composition in this context refers to the generation and selection of the core musical material — the harmonic structures, melodic ideas, and rhythmic frameworks that define each track before arrangement or production decisions are applied.</p>
+      <p>The compositional tools available on a mobile device are narrower than their desktop equivalents, but this constraint proved generative. Limitations on polyphony, on instrument layering, and on processing overhead forced compositional simplicity — and simplicity, in heavy music, is often a virtue. The most effective metal riffs are not complex. They are precise.</p>
+      <h3>Working in the dark-fantasy idiom</h3>
+      <p>The compositional territory of dark-fantasy metal draws on a specific vocabulary: minor and diminished harmonies, chromatic movement, modal interchange, drop-tuning that emphasises the lower register. These are learnable conventions. The AI tools could model them with reasonable fidelity.</p>
+      <p>What the tools could not model was the compositional character that distinguishes a track from a template. That required editorial judgment — the ability to listen to generated material and identify not the best-executed output, but the output with the most potential to develop into something with genuine character.</p>
+      <div class="callout">
+        <div class="callout-label">Compositional Observation</div>
+        <p>The most useful AI-generated compositional material was never the most complete. It was the sketch — the fragment with an interesting structural idea that a human could develop. Complete outputs tended toward genre convention. Fragments tended toward possibility.</p>
+      </div>
+      <h3>The nine-track arc</h3>
+      <p>The compositional challenge of a full album is different from the challenge of a single track. Individual tracks need internal coherence. An album needs an arc — a sense of movement from opening to close that gives the collection a reason to exist as a collection rather than a playlist. That arc was designed before composition began and revised as composition produced material that suggested different directions.</p>
+    </div>
+  </div>
+
+  <hr class="section-div"/>
+
+  <!-- CH 8 -->
+  <div id="ch-arrangement">
+    <div class="chapter-head reveal">
+      <div class="ch-label">Chapter Eight</div>
+      <div class="ch-num">08</div>
+      <div class="ch-title"><em>Arrangement</em></div>
+      <div class="ch-sub">Structure as expression — how the parts were assembled.</div>
+    </div>
+    <div class="body-text reveal">
+      <p>Arrangement is the discipline of deciding what happens when. Which instruments enter and exit, where the dynamics build and fall, how the verse-chorus-bridge structure serves or departs from the genre's established conventions. It is, in many ways, the most compositionally sophisticated part of production — and the area where AI assistance was least reliable.</p>
+      <p>Generated arrangements tended toward predictability. The tools modelled genre conventions accurately enough to produce structurally correct outputs — verse, pre-chorus, chorus, breakdown, bridge — but the accuracy was the limitation. Metal's most memorable moments tend to occur where the expected structure is interrupted: an unexpected metric shift, a dynamic collapse that violates the build, a section that refuses resolution.</p>
+      <h3>Human intervention as structural design</h3>
+      <p>The human contribution to arrangement was primarily subtractive. Generated structures were simplified, sections were removed, and conventional resolutions were replaced with more ambiguous or aggressive alternatives. The AI provided the skeleton. The human creator broke bones to reshape it.</p>
+      <div class="pull-quote">
+        <p>The arrangement that surprised the listener was almost never the one the tool generated. It was the one that used the tool's output as a point of departure for a decision the tool would not have made.</p>
+      </div>
+    </div>
+  </div>
+
+  <hr class="section-div"/>
+
+  <!-- CH 9 -->
+  <div id="ch-sound">
+    <div class="chapter-head reveal">
+      <div class="ch-label">Chapter Nine</div>
+      <div class="ch-num">09</div>
+      <div class="ch-title">Sound <em>Design</em></div>
+      <div class="ch-sub">Texture, timbre, and the character of audio.</div>
+    </div>
+    <div class="body-text reveal">
+      <p>Sound design in heavy music refers to the tonal character of individual elements: the specific quality of distortion on the guitar, the character of the drum sound, the processing applied to the vocal, the ambient texture that sits beneath or between the primary elements. These decisions are, collectively, what makes a metal recording sound like itself rather than like any metal recording.</p>
+      <h3>Mobile production constraints as aesthetic parameters</h3>
+      <p>Audio produced on consumer mobile hardware has a characteristic sonic signature: a compressed mid-range, limited low-frequency extension, a brightness that comes from smaller drivers and digital processing chains. Rather than attempting to overcome this signature, the project incorporated it. The resulting sound is not what a professional studio would produce. It is something else — a record of what is possible with the tools that are available.</p>
+      <div class="callout highlight">
+        <div class="callout-label">Design Principle Applied</div>
+        <p><strong>Constraints Create Clarity.</strong> The hardware bottlenecks of mobile production were not obstacles to sound design — they were the parameters within which the album's sonic identity was defined.</p>
+      </div>
+      <h3>The dark-fantasy atmosphere</h3>
+      <p>The conceptual territory of the album demanded specific atmospheric qualities: a sense of physical weight, of temporal scale, of something ancient and threatening. These qualities were pursued through layering — the accumulation of low-level textural elements beneath the primary audio that created an impression of depth without requiring the processing headroom of complex reverb chains.</p>
+      <p>For track one, the approach was a frozen keyframe with a rain-particle overlay — a visual and sonic simplicity arrived at through the failure of more complex approaches. The simplification reduced export time by approximately 70% while preserving the atmospheric character the track required. This was not a compromise. It was an editorial decision.</p>
+    </div>
+  </div>
+
+  <hr class="section-div"/>
+
+  <!-- CH 10 -->
+  <div id="ch-iteration">
+    <div class="chapter-head reveal">
+      <div class="ch-label">Chapter Ten</div>
+      <div class="ch-num">10</div>
+      <div class="ch-title">Iteration and <em>Refinement</em></div>
+      <div class="ch-sub">The productive failures, and what came after them.</div>
+    </div>
+    <div class="body-text reveal">
+      <p>The most honest chapter of any creative process documentation is the one that describes what failed. Iteration is not refinement toward a predetermined ideal — it is a process of discovering what the work is, through the accumulation of attempts that are insufficient.</p>
+      <h3>The concurrent rendering failure</h3>
+      <p>The most significant technical failure in the project occurred during the audio-visual production phase for the full nine-track package. The initial plan was concurrent rendering — all nine tracks processed simultaneously to produce a unified output. On the Redmi 12, this triggered thermal throttling within minutes. The device's memory allocation was saturated. The rendering process terminated.</p>
+      <div class="flow">
+        <div class="flow-step">Multi-Asset Plan</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">Hardware Bottleneck</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">Sequential Isolation</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step accent">Track 1 Export ✓</div>
+        <div class="flow-label">Figure — Production Pipeline Transition (The Calibration Loop Sequence)</div>
+      </div>
+      <p>The resolution was structural rather than technical. Concurrent rendering was abandoned. A sequential deployment protocol was implemented: isolate a single track, freeze its configuration, execute the export, then proceed to the next. Track one was completed within a 48-hour window. The protocol established a rhythm for the remaining eight tracks.</p>
+      <div class="callout">
+        <div class="callout-label">Operational Principle</div>
+        <p>Deconstruct complex multi-asset targets into isolated, manageable units. Never buffer what you can ship. Sequential deployment prevents system saturation and builds early project momentum.</p>
+      </div>
+      <h3>The discovery loop</h3>
+      <p>The productive failures were not only technical. Several compositional directions were pursued across multiple sessions before being abandoned — not because they were technically failed, but because they did not serve the album's evolving identity. These sessions clarified what the album was not, which is a necessary step in understanding what it is. The documentation of abandoned directions is as important as the documentation of what succeeded.</p>
+    </div>
+  </div>
+
+  <hr class="section-div"/>
+
+  <!-- CH 11 -->
+  <div id="ch-visual">
+    <div class="chapter-head reveal">
+      <div class="ch-label">Chapter Eleven</div>
+      <div class="ch-num">11</div>
+      <div class="ch-title">Visual <em>Identity</em></div>
+      <div class="ch-sub">Building a coherent visual language for the project.</div>
+    </div>
+    <div class="body-text reveal">
+      <p>Visual identity in music production is often treated as secondary — something applied after the audio is complete, to package it for distribution. That approach was explicitly rejected in this project. The visual language was developed in parallel with the sonic material, and the two were designed to be mutually reinforcing.</p>
+      <p>The dark-fantasy thematic territory established parameters for the visual direction as clearly as it did for the audio. The visual language needed to carry a sense of weight, antiquity, and scale — communicating the album's emotional register before a single note was heard.</p>
+      <h3>Constraint-driven visual design</h3>
+      <p>Complex generative visual systems — dynamic backgrounds, particle effects with high frame counts, layered compositing — were ruled out by the device's processing limitations. The visual approach had to be atmospheric through simplicity rather than through complexity.</p>
+      <p>The rain-particle overlay on track one became a visual signature: a single dynamic element applied over a high-contrast still image, creating movement and atmosphere without rendering load. It was a constraint solution that became an aesthetic choice.</p>
+      <h3>The pixel-timer UI element</h3>
+      <p>A stylised pixel-timer UI was incorporated into the track one visual — a deliberate anachronism that placed a digital, grid-based element within the dark-fantasy visual territory. The combination was an example of the productive friction that defined the broader project: the collision of the algorithmic and the atmospheric, the modern and the ancient.</p>
+    </div>
+  </div>
+
+  <hr class="section-div"/>
+
+  <!-- CH 12 -->
+  <div id="ch-artwork">
+    <div class="chapter-head reveal">
+      <div class="ch-label">Chapter Twelve</div>
+      <div class="ch-num">12</div>
+      <div class="ch-title">Album <em>Artwork</em></div>
+      <div class="ch-sub">The image that carries the work into the world.</div>
+    </div>
+    <div class="body-text reveal">
+      <p>Album artwork occupies a peculiar position in music production: it is not the music, but it is the first encounter most listeners will have with the music. It is the surface through which the work enters the world, and the image by which it will be remembered — or not.</p>
+      <p>Multiple directions were generated and evaluated before a direction was committed to. The evaluation criteria were consistent: does this image communicate the album's emotional register? Does it extend the visual language established for track one? Does it have the scale and weight the music requires?</p>
+      <h3>AI-assisted image generation</h3>
+      <p>AI image generation tools were used extensively in the artwork development process. The tools were productive at generating material in the thematic territory — dark landscapes, mythological figures, atmospheric imagery — with speed that would have been impossible through conventional commission or original photography.</p>
+      <div class="callout">
+        <div class="callout-label">Process Observation</div>
+        <p>AI image generation produced strong material at the genre level. The specificity that made the artwork belong to this album rather than to dark-fantasy metal in general was the result of deliberate human selection and direction — not generation.</p>
+      </div>
+    </div>
+  </div>
+
+  <hr class="section-div"/>
+
+  <!-- CH 13 -->
+  <div id="ch-publishing">
+    <div class="chapter-head reveal">
+      <div class="ch-label">Chapter Thirteen</div>
+      <div class="ch-num">13</div>
+      <div class="ch-title">Publishing <em>Workflow</em></div>
+      <div class="ch-sub">The mechanics of getting the work into the world.</div>
+    </div>
+    <div class="body-text reveal">
+      <p>The publishing phase produced a lesson that was, in retrospect, predictable: creative completion and public visibility are two entirely separate problems, each requiring its own discipline.</p>
+      <p>The first track was published with abstract, internally coherent branding — titles and metadata that made sense within the project's own vocabulary but communicated nothing useful to external discovery systems. The result was zero initial views. Not a failure of the music. A failure of metadata.</p>
+      <h3>The algorithmic distribution overlay</h3>
+      <p>Public discovery networks parse structural markers, keyword density, and engagement pathways. They do not parse artistic intent. A technically excellent piece of music with unoptimised metadata is invisible to these systems.</p>
+      <div class="flow">
+        <div class="flow-step">Raw Video (0 Views)</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">9:16 Shorts Extraction</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step">SEO Metadata Tagging</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-step accent">Indexed Distribution</div>
+        <div class="flow-label">Figure — Algorithmic Distribution Funnel (v1.2 Overlay)</div>
+      </div>
+      <p>Three distribution channels were activated in parallel: long-form video with explicit subgenre SEO tags; 9:16 short-form extraction as a discovery vector; and direct engagement with specialised technical forums where the production methodology itself was relevant to the audience.</p>
+      <div class="callout highlight">
+        <div class="callout-label">Distribution Principle</div>
+        <p>Never expect discovery without optimisation. Build structural signs before opening the showroom doors. The algorithm is a mechanical sort engine. It responds to structured metadata indicators, not artistic sincerity.</p>
+      </div>
+      <h3>Translating creative output into professional capital</h3>
+      <p>The final distribution challenge was institutional: how to present the project to professional networks in a way that communicated its genuine technical complexity. A music production project, presented as such to a corporate audience, reads as a hobby. The same project, presented as a case study in resource-constrained media engineering, reads as a demonstration of professional competency. The re-framing was not dishonest. It was translation.</p>
+    </div>
+  </div>
+
+  <hr class="section-div"/>
+
+  <!-- CH 14 -->
+  <div id="ch-lessons">
+    <div class="chapter-head reveal">
+      <div class="ch-label">Chapter Fourteen</div>
+      <div class="ch-num">14</div>
+      <div class="ch-title">Lessons <em>Learned</em></div>
+      <div class="ch-sub">What the process taught, stated plainly.</div>
+    </div>
+    <div class="body-text reveal">
+      <p>The following lessons are stated without elaboration. Each is grounded in a specific decision or failure documented elsewhere in this record. They are offered as transferable principles rather than project-specific conclusions.</p>
+      <div class="lessons-grid">
+        <div class="lesson-card">
+          <div class="lesson-num">1</div>
+          <div class="lesson-title">Mode separation is not optional</div>
+          <div class="lesson-body">Exploration, optimisation, and execution must be separated as hard operational states. Blurring them produces sessions that consume time without producing deployable output.</div>
+        </div>
+        <div class="lesson-card">
+          <div class="lesson-num">2</div>
+          <div class="lesson-title">Hardware constraints are parameters</div>
+          <div class="lesson-body">The Redmi 12 was not the wrong tool for this project. It was the tool available. Working within its constraints shaped the project's aesthetic identity as surely as any intentional creative decision.</div>
+        </div>
+        <div class="lesson-card">
+          <div class="lesson-num">3</div>
+          <div class="lesson-title">Deploy before optimising</div>
+          <div class="lesson-body">Track one was shipped as soon as it was complete, before the remaining eight tracks existed. That deployment created accountability, generated early feedback, and established the production standard for subsequent tracks.</div>
+        </div>
+        <div class="lesson-card">
+          <div class="lesson-num">4</div>
+          <div class="lesson-title">Perfectionism is a scheduling problem</div>
+          <div class="lesson-body">Delaying deployment to maintain an unblemished internal standard is procrastination. Done is the baseline requirement for anything. The version that ships is the only version that exists in public.</div>
+        </div>
+        <div class="lesson-card">
+          <div class="lesson-num">5</div>
+          <div class="lesson-title">Metadata is not the music</div>
+          <div class="lesson-body">Optimising distribution metadata does not compromise artistic integrity. They are separate problems. Treating them as a single problem produces work that is neither artistically satisfying nor publicly visible.</div>
+        </div>
+        <div class="lesson-card">
+          <div class="lesson-num">6</div>
+          <div class="lesson-title">The dialogue is more productive than the prompt</div>
+          <div class="lesson-body">Sustained, directed engagement with generative tools produces qualitatively different results than well-crafted single-shot prompts. The relationship matters as much as the question.</div>
+        </div>
+        <div class="lesson-card">
+          <div class="lesson-num">7</div>
+          <div class="lesson-title">Document everything</div>
+          <div class="lesson-body">The value of this publication is not the conclusions. It is the record of why decisions were made. That record is the asset that persists when the specific tools, platforms, and workflows have changed.</div>
+        </div>
+        <div class="lesson-card">
+          <div class="lesson-num">8</div>
+          <div class="lesson-title">Self-mythology is a liability</div>
+          <div class="lesson-body">Belief in one's own exceptional status, without verifiable evidence in external output, is a structural vulnerability. It insulates the operator from feedback and replaces metrics with narrative. The correction is rigorous self-audit.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="section-div"/>
+
+  <!-- CH 15 -->
+  <div id="ch-limits">
+    <div class="chapter-head reveal">
+      <div class="ch-label">Chapter Fifteen</div>
+      <div class="ch-num">15</div>
+      <div class="ch-title"><em>Limitations</em></div>
+      <div class="ch-sub">What this project could not do, and what that means.</div>
+    </div>
+    <div class="body-text reveal">
+      <p>A credible case study documents its limitations as carefully as its achievements.</p>
+      <div class="limitation">
+        <div class="limitation-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg></div>
+        <div class="limitation-body">
+          <div class="limitation-title">Live performance reproduction</div>
+          <div class="limitation-text">The album cannot be reproduced in live performance without significant additional work. The production is a studio document, not a performance blueprint. The tools used to generate audio material do not produce notation, tablature, or performance-ready stems.</div>
+        </div>
+      </div>
+      <div class="limitation">
+        <div class="limitation-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg></div>
+        <div class="limitation-body">
+          <div class="limitation-title">Professional audio fidelity</div>
+          <div class="limitation-text">The sonic signature of mobile production is audible to anyone accustomed to professional studio recordings. The frequency response, dynamic range, and stereo imaging of mobile audio production are not equivalent to professional hardware. This is a technical fact, not a judgment about the work's value.</div>
+        </div>
+      </div>
+      <div class="limitation">
+        <div class="limitation-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg></div>
+        <div class="limitation-body">
+          <div class="limitation-title">Genre authenticity claims</div>
+          <div class="limitation-text">The project does not claim to produce traditional metal recording. It produces AI-assisted metal — a distinct category. The project's identity is contingent on its methodology being disclosed.</div>
+        </div>
+      </div>
+      <div class="limitation">
+        <div class="limitation-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg></div>
+        <div class="limitation-body">
+          <div class="limitation-title">Replicability across hardware contexts</div>
+          <div class="limitation-text">The sequential deployment protocol and workflow design were developed for the specific constraints of the Redmi 12. Some elements will transfer directly to other mobile production contexts. Others will require adaptation. This record is a case study, not a universal template.</div>
+        </div>
+      </div>
+      <div class="limitation">
+        <div class="limitation-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg></div>
+        <div class="limitation-body">
+          <div class="limitation-title">Scalability of the generation-to-deployment cycle</div>
+          <div class="limitation-text">The workflow documented here produced one nine-track album in one production cycle. It has not been stress-tested across multiple consecutive projects or against significantly different creative territories. Its scalability remains unverified.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="section-div"/>
+
+  <!-- CH 16 -->
+  <div id="ch-replace">
+    <div class="chapter-head reveal">
+      <div class="ch-label">Chapter Sixteen</div>
+      <div class="ch-num">16</div>
+      <div class="ch-title">What AI Can and <em>Cannot Replace</em></div>
+      <div class="ch-sub">An honest accounting of the division of labour.</div>
+    </div>
+    <div class="body-text reveal">
+      <p>The question of what AI can and cannot replace in creative practice is better answered through documented practice than through theoretical argument. This project constitutes a body of evidence.</p>
+      <h4>What AI replaced or significantly augmented</h4>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Domain</th><th>AI Contribution</th><th>Human Role</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Compositional scaffolding</strong></td><td>Generated harmonic structures, rhythmic frameworks, and melodic sketches at speed</td><td>Selected, rejected, and developed from the generated material</td></tr>
+            <tr><td><strong>Lyric drafting</strong></td><td>Produced thematically coherent raw material within the defined vocabulary</td><td>Revised, refined, and claimed the final text</td></tr>
+            <tr><td><strong>Visual generation</strong></td><td>Generated atmospheric imagery at the genre level with speed and volume</td><td>Directed, selected, and shaped the final visual identity</td></tr>
+            <tr><td><strong>Reference and research</strong></td><td>Functioned as an always-available sounding board for genre research and direction</td><td>Evaluated and applied the referenced material to specific creative decisions</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <h4>What AI could not replace</h4>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Domain</th><th>Why AI Was Insufficient</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Aesthetic judgment</strong></td><td>The determination that one output was better than another — more specific, more interesting, more true to the project's identity — required human evaluation the tools could not perform</td></tr>
+            <tr><td><strong>Editorial specificity</strong></td><td>The difference between genre-appropriate and album-specific could not be generated. It had to be applied through deliberate human selection</td></tr>
+            <tr><td><strong>Structural vision</strong></td><td>The nine-track arc, the decision that the album was about confrontation rather than mourning, the choice of dark-fantasy territory — these were human decisions that preceded and shaped every AI interaction</td></tr>
+            <tr><td><strong>Accountability</strong></td><td>The decision to ship — to declare a version complete and release it into the world — is a human act with human consequences. No tool makes that decision or bears its weight</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="pull-quote">
+        <p>The AI was a collaborator, a mirror, and an instrument. It was never the author. Authorship requires the willingness to stand behind the work — to say: this is mine, I made it, I release it into the world. That willingness is irreducibly human.</p>
+      </div>
+    </div>
+  </div>
+
+  <hr class="section-div"/>
+
+  <!-- CH 17 -->
+  <div id="ch-future">
+    <div class="chapter-head reveal">
+      <div class="ch-label">Chapter Seventeen</div>
+      <div class="ch-num">17</div>
+      <div class="ch-title">Future <em>Directions</em></div>
+      <div class="ch-sub">Where this work could go, stated without hype.</div>
+    </div>
+    <div class="body-text reveal">
+      <p>Future directions are stated as genuine possibilities grounded in the evidence of this project — not as aspirational claims or marketing language. Each is identified as a logical extension of what was established here, conditioned by the limitations that were also documented here.</p>
+      <h3>Expanded hardware access</h3>
+      <p>The most immediate and most significant constraint on this project was hardware. The sequential deployment protocol, the visual simplification decisions, and the audio fidelity limitations are all direct consequences of mobile-only production. Access to modest desktop hardware — not professional studio equipment, but a mid-range computer with a standard DAW — would substantially expand the production possibilities while leaving the core workflow largely intact.</p>
+      <h3>Collaborative integration</h3>
+      <p>This project was produced by a single individual. The workflow was designed for solo operation. The next iteration could incorporate human collaborators — a vocalist, a guitarist, a mixing engineer — who interact with AI-generated material at specific points in the pipeline. The documentation discipline established in this project would need to extend to capture the collaborative decisions as precisely as the solo ones.</p>
+      <h3>Real-time AI integration in performance</h3>
+      <p>The tools used in this project operated in a generation-and-selection mode: produce material, evaluate it, select what to keep. A different application of similar technology would integrate AI into real-time performance — using generative systems to respond to live input in ways that extend rather than replace what the performer is doing. This is a substantially different technical and artistic problem, but one adjacent to the work done here.</p>
+      <h3>The documentation as a living system</h3>
+      <p>This publication is designed to be updated as the project evolves. The NM Studio Documentation Library is an ongoing project, not a closed record. Future volumes will document subsequent production cycles, refined methodologies, and the outcomes of directions described here. The system is designed to be calibrated continuously — not fixed at the moment of first publication.</p>
+      <div class="callout">
+        <div class="callout-label">Version Note</div>
+        <p>This document is v1.1. The versioning reflects not cosmetic revision but substantive additions of operational data and methodological refinement. When the underlying conditions change sufficiently, a new version will be produced rather than amending the existing record.</p>
+      </div>
+    </div>
+  </div>
+
+  <hr class="section-div"/>
+
+  <!-- CONCLUSION -->
+  <div id="conclusion">
+    <div class="chapter-head reveal">
+      <div class="ch-label">Conclusion</div>
+      <div class="ch-title">The <em>Living System</em></div>
+      <div class="ch-sub">What this project established, and what it leaves open.</div>
+    </div>
+    <div class="body-text reveal">
+      <p>This publication does not close a question. It documents the first serious attempt to answer one — and the record of that attempt is itself the contribution.</p>
+      <p>The project established that AI-assisted metal production is possible. That a single individual, operating on consumer mobile hardware, can produce a nine-track conceptual album with genuine aesthetic intent and a coherent visual identity. That the tools exist, that a workflow can be designed around their constraints, and that the result can be published and distributed through conventional channels.</p>
+      <p>It also established, with equal clarity, what AI cannot do in this context. It cannot make the decisions that determine whether the work is specific rather than generic, genuine rather than merely competent. It cannot bear the creative responsibility that makes the work belong to someone. It cannot stand behind the work when it meets the world.</p>
+      <div class="pull-quote">
+        <p>The mythos has been cleared. The territory is established. The execution engine remains permanent.</p>
+        <cite>— NM Studio, Editorial Afterword (v1.1)</cite>
+      </div>
+      <p>What remains is the next cycle. The calibration loop is not a diagram. It is a practice. Every project is an input to the next iteration of the system. This publication is both an output of the first cycle and a structural input to the second.</p>
+      <p>The work continues. The record continues. The system is designed to outlast any single version of itself.</p>
+    </div>
+  </div>
+
+  <hr class="section-div"/>
+
+  <!-- APPENDIX -->
+  <div id="appendix">
+    <div class="chapter-head reveal">
+      <div class="ch-label">Appendix</div>
+      <div class="ch-title">Reference Materials</div>
+      <div class="ch-sub">Glossary, decision log, design principles, and operational checklist.</div>
+    </div>
+
+    <div class="body-text reveal">
+
+      <div class="appendix-block">
+        <h3>I — Vocabulary &amp; Framework Glossary</h3>
+        <div class="glossary-entry">
+          <div class="glossary-term">Systems-Oriented Creative Optimizer</div>
+          <div class="glossary-def">An operator who leverages explicit technical frameworks and structural logic to transform raw, unorganised inputs into high-control, highly calibrated digital realities.</div>
+        </div>
+        <div class="glossary-entry">
+          <div class="glossary-term">The Mythos Phase</div>
+          <div class="glossary-def">An early, uncalibrated operational state where identity is built on unverified narratives, simulated internal potential, and existential isolation rather than public data.</div>
+        </div>
+        <div class="glossary-entry">
+          <div class="glossary-term">The Calibration Loop</div>
+          <div class="glossary-def">The continuous cycle of environmental input → internal audit → structural adjustment → deployment → feedback → re-calibration. Not an isolated correction event but a permanent operational posture.</div>
+        </div>
+        <div class="glossary-entry">
+          <div class="glossary-term">Over-Optimisation Trap</div>
+          <div class="glossary-def">A systemic workflow defect wherein processing cycles are endlessly expended on minute adjustments past the threshold of functional value or strategic return.</div>
+        </div>
+        <div class="glossary-entry">
+          <div class="glossary-term">Sequential Deployment Protocol</div>
+          <div class="glossary-def">A risk-mitigation workflow that isolates single assets for final execution and public release before allocating system memory to subsequent pipeline units.</div>
+        </div>
+        <div class="glossary-entry">
+          <div class="glossary-term">Algorithmic Distribution Overlay (v1.2)</div>
+          <div class="glossary-def">A structured distribution strategy that replaces passive publishing with three active engagement funnels: long-form content with SEO-optimised metadata, short-form extraction for discovery, and targeted engagement with specialised communities.</div>
+        </div>
+        <div class="glossary-entry">
+          <div class="glossary-term">Identity Model v1.0 (High-Precision)</div>
+          <div class="glossary-def">The operational framework replacing the Mythos Phase. Redefines the operator as a Systems-Oriented Creative Optimizer with a primary objective restricted to executing a continuous transformation loop: raw input → structured, deployable output.</div>
+        </div>
+      </div>
+
+      <div class="appendix-block">
+        <h3>II — Comprehensive System Decision Log</h3>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Problem</th><th>Observation</th><th>Decision</th><th>Result</th></tr></thead>
+            <tbody>
+              <tr><td><strong>System Defect Audit</strong></td><td>Ego structures in v0.1 induced vulnerability to intellectual hubris and narrative inflation</td><td>Execute deconstruction of personal uniqueness claims; install evidence-based identity model</td><td>Installation of the objective, metrics-driven High-Precision Model v1.0</td></tr>
+              <tr><td><strong>Workflow Collapse</strong></td><td>Concurrent generation across all tracks with no mode separation produced disconnected, undeployable material</td><td>Define and enforce three hard operational modes: Exploration, Optimisation, Execution</td><td>Deployable output per session; project momentum established</td></tr>
+              <tr><td><strong>Hardware Throttling</strong></td><td>Redmi 12 memory limits saturated by multi-track concurrent rendering; process terminated</td><td>Halt parallel rendering; isolate Track 1 with static background template and rain-particle overlay</td><td>Successful asset export within 48-hour window; 70% reduction in export time</td></tr>
+              <tr><td><strong>Discovery Freeze</strong></td><td>Distribution directory registered 0 views due to abstract naming and unoptimised metadata</td><td>Integrate v1.2 distribution overlay: Shorts extraction funnel and explicit subgenre SEO strings</td><td>Corrected indexing errors across distribution search networks; organic traffic secured</td></tr>
+              <tr><td><strong>Profile Isolation</strong></td><td>English Literature academic credentials disconnected from demonstrated digital engineering capacity</td><td>Re-frame music production project as a technical media optimisation case study for professional networks</td><td>Established verified professional authority; cohesive Systems Optimizer brand identity</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="appendix-block">
+        <h3>III — Six Immutable Design Principles</h3>
+        <div class="principles">
+          <div class="principle">
+            <div class="principle-n">1</div>
+            <div class="principle-body">
+              <div class="principle-rule">Reality Over Mythology</div>
+              <div class="principle-detail">Reject internal self-mythologising narratives. Replace unverified assumptions of inherent uniqueness with clear, empirical data points demonstrable in public spaces.</div>
+            </div>
+          </div>
+          <div class="principle">
+            <div class="principle-n">2</div>
+            <div class="principle-body">
+              <div class="principle-rule">Systems Over Motivation</div>
+              <div class="principle-detail">Build automated constraints and fixed operating frameworks that deliver consistent outputs regardless of operator mood or motivational state.</div>
+            </div>
+          </div>
+          <div class="principle">
+            <div class="principle-n">3</div>
+            <div class="principle-body">
+              <div class="principle-rule">Iteration Over Perfection</div>
+              <div class="principle-detail">Perfection is an idealised simulation that induces systemic latency. Force development progress via bounded, aggressive cycles where speed-to-deployment is prioritised.</div>
+            </div>
+          </div>
+          <div class="principle">
+            <div class="principle-n">4</div>
+            <div class="principle-body">
+              <div class="principle-rule">Constraints Create Clarity</div>
+              <div class="principle-detail">Frame hardware bottlenecks, memory limitations, and restrictive environments not as systemic defects, but as primary parameters that force high-efficiency design choices.</div>
+            </div>
+          </div>
+          <div class="principle">
+            <div class="principle-n">5</div>
+            <div class="principle-body">
+              <div class="principle-rule">Publish Before Optimising</div>
+              <div class="principle-detail">Establish immediate external validation loops by deploying minimal functional assets into live environments. Never attempt to calibrate visibility tags or fine-tune assets in a vacuum.</div>
+            </div>
+          </div>
+          <div class="principle">
+            <div class="principle-n">6</div>
+            <div class="principle-body">
+              <div class="principle-rule">Evidence Over Intuition</div>
+              <div class="principle-detail">Treat intuition as a localised pattern-recognition hypothesis requiring systematic audit. Defer all critical pipeline alterations to verified performance data and real-world results.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="appendix-block">
+        <h3>IV — Operational Deployment Verification Checklist</h3>
+        <ul class="checklist">
+          <li>
+            <div class="checklist-mark"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+            <span><strong>Objective Freeze</strong> — Output targets explicitly locked in structural text. Vague goals trigger loop termination.</span>
+            <span class="checklist-status">VERIFIED</span>
+          </li>
+          <li>
+            <div class="checklist-mark"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+            <span><strong>Iteration Cap Check</strong> — Pass limits locked at 7 cycles for logic configurations, 3 cycles for visual layouts.</span>
+            <span class="checklist-status">VERIFIED</span>
+          </li>
+          <li>
+            <div class="checklist-mark"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+            <span><strong>Hardware Memory Audit</strong> — Background services debloated; storage capacity cleared for isolated single-track rendering.</span>
+            <span class="checklist-status">VERIFIED</span>
+          </li>
+          <li>
+            <div class="checklist-mark"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+            <span><strong>Metadata Alignment</strong> — Search engine indexing tags and comparative anchor strings embedded prior to launching deployment switches.</span>
+            <span class="checklist-status">VERIFIED</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="appendix-block">
+        <h3>V — Document Record</h3>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Field</th><th>Value</th></tr></thead>
+            <tbody>
+              <tr><td><strong>Document ID</strong></td><td>NMS-DL-2026-V1.2</td></tr>
+              <tr><td><strong>Classification</strong></td><td>Canonical Source Document — Digital Interface Deployment</td></tr>
+              <tr><td><strong>First Edition</strong></td><td>July 2026</td></tr>
+              <tr><td><strong>Production Environment</strong></td><td>Redmi 12, HyperOS 2, Android 15</td></tr>
+              <tr><td><strong>Operator Background</strong></td><td>English Literature, Daffodil International University (CGPA 3.55)</td></tr>
+              <tr><td><strong>Framework Evolution</strong></td><td>v0.1 (Experimental) → v1.0 (Core Standard) → v1.2 (Distribution Overlay)</td></tr>
+              <tr><td><strong>Repository</strong></td><td>NM Studio Documentation Library — Archival Volume II</td></tr>
+              <tr><td><strong>License</strong></td><td>© 2026 NM Studio. All rights reserved.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div><!-- /.publication -->
+
+<footer class="pub-footer">
+  <div class="pub-footer-inner">
+    <div>
+      <div class="pub-footer-brand">Metal AI Music — No Limits</div>
+      <div class="pub-footer-sub">NM Studio · Documentation Library · Archival Volume II</div>
+    </div>
+    <div>
+      <div class="pub-footer-meta">
+        Document ID: NMS-DL-2026-V1.2<br/>
+        © 2026 NM Studio. All rights reserved.<br/>
+        Published July 2026
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  /* Reading bar */
+  const bar   = document.getElementById('readingBar');
+  const bTop  = document.getElementById('backTop');
+  window.addEventListener('scroll', () => {
+    const st = window.scrollY;
+    const dh = document.documentElement.scrollHeight - window.innerHeight;
+    bar.style.width = (st / dh * 100) + '%';
+    bTop.classList.toggle('visible', st > 500);
+  }, { passive: true });
+
+  /* Nav toggle */
+  const navT  = document.getElementById('navToggle');
+  const chNav = document.getElementById('chapterNav');
+  navT.addEventListener('click', () => {
+    const open = chNav.classList.toggle('open');
+    navT.classList.toggle('open', open);
+    navT.setAttribute('aria-expanded', String(open));
+  });
+  chNav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+    chNav.classList.remove('open');
+    navT.classList.remove('open');
+    navT.setAttribute('aria-expanded', 'false');
+  }));
+
+  /* Active nav */
+  const allSections = document.querySelectorAll('[id]');
+  const navAs       = document.querySelectorAll('.chapter-nav a[data-s]');
+  const sectObs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting)
+        navAs.forEach(a => a.classList.toggle('active', a.dataset.s === e.target.id));
+    });
+  }, { rootMargin: '-20% 0px -70% 0px' });
+  allSections.forEach(s => sectObs.observe(s));
+
+  /* Chapter head spine */
+  const headObs = new IntersectionObserver(entries => {
+    entries.forEach(e => e.target.classList.toggle('vis', e.isIntersecting));
+  }, { threshold: 0.2 });
+  document.querySelectorAll('.chapter-head').forEach(h => headObs.observe(h));
+
+  /* Scroll reveal */
+  const revObs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('visible'); revObs.unobserve(e.target); }
+    });
+  }, { threshold: 0.06 });
+  document.querySelectorAll('.reveal').forEach(el => revObs.observe(el));
+
+  /* ============================================================
+     LISTEN — on-demand Bandcamp / YouTube players
+     To feature a different release, change the two constants below
+     and the data-yt attributes on the track buttons.
+     ============================================================ */
+  (() => {
+    const BC_ALBUM_ID = '204154880';
+    const YT_PLAYLIST = 'PLE7xqQB69sf6MtY6PxdStT8oVcuOkUtPK';
+
+    const pane = {
+      bandcamp: document.getElementById('pane-bandcamp'),
+      youtube:  document.getElementById('pane-youtube')
+    };
+    const tab = {
+      bandcamp: document.getElementById('tab-bandcamp'),
+      youtube:  document.getElementById('tab-youtube')
+    };
+    const nowText = document.getElementById('playerNow');
+    const nowHead = document.getElementById('playerTitle');
+    const listen  = document.getElementById('listen');
+    const loaded  = { bandcamp: false, youtube: false };
+
+    const BC_SRC = (autoplay) =>
+      'https://bandcamp.com/EmbeddedPlayer/v=2/album=' + BC_ALBUM_ID +
+      '/size=large/artwork=small/tracklist=false/bgcol=0f0f13/linkcol=e04c3a/transparent=true/' +
+      (autoplay ? 'autoplay=true/' : '');
+
+    const YT_SRC = (videoId, autoplay) =>
+      'https://www.youtube-nocookie.com/embed/' + (videoId ? videoId : 'videoseries?list=' + YT_PLAYLIST) +
+      '?' + (autoplay ? 'autoplay=1&' : '') + 'rel=0&playsinline=1';
+
+    const setNow = (text) => {
+      if (nowText) nowText.textContent = text;
+      if (nowHead) nowHead.classList.add('playing');
+      if (listen)  listen.classList.add('is-playing');
+    };
+
+    const inject = (key, src, title, allow) => {
+      if (!pane[key]) return;
+      const facade = pane[key].querySelector('.player-facade');
+      if (facade) facade.remove();
+      const f = document.createElement('iframe');
+      f.src = src;
+      f.title = title;
+      f.setAttribute('allow', allow);
+      f.setAttribute('loading', 'lazy');
+      pane[key].appendChild(f);
+      loaded[key] = true;
+    };
+
+    const show = (key) => {
+      Object.keys(pane).forEach((k) => {
+        if (!pane[k] || !tab[k]) return;
+        pane[k].classList.toggle('active', k === key);
+        tab[k].classList.toggle('active', k === key);
+        tab[k].setAttribute('aria-pressed', String(k === key));
+      });
+    };
+
+    const markTrack = (videoId) => {
+      document.querySelectorAll('.track').forEach((b) => {
+        b.classList.toggle('playing', !!videoId && b.dataset.yt === videoId);
+      });
+    };
+
+    const playBandcamp = () => {
+      show('bandcamp');
+      if (!loaded.bandcamp) inject('bandcamp', BC_SRC(true), 'Fighting Death — Bandcamp album player', 'autoplay');
+      setNow('Now playing — Fighting Death · full album (Bandcamp)');
+      markTrack(null);
+    };
+
+    const playYouTube = (videoId, label) => {
+      show('youtube');
+      const src = YT_SRC(videoId, true);
+      if (loaded.youtube) {
+        const f = pane.youtube.querySelector('iframe');
+        if (f) f.src = src;
+      } else {
+        inject('youtube', src, 'Fighting Death — YouTube player', 'autoplay; encrypted-media; picture-in-picture; fullscreen');
+      }
+      setNow(label || 'Now playing — Fighting Death · full album (YouTube)');
+      markTrack(videoId || null);
+    };
+
+    const coverPlay = document.getElementById('coverPlay');
+    const facadeBC  = document.getElementById('facadeBandcamp');
+    const facadeYT  = document.getElementById('facadeYouTube');
+    if (coverPlay) coverPlay.addEventListener('click', playBandcamp);
+    if (facadeBC)  facadeBC.addEventListener('click', playBandcamp);
+    if (facadeYT)  facadeYT.addEventListener('click', () => playYouTube(null, null));
+
+    Object.keys(tab).forEach((k) => {
+      if (!tab[k]) return;
+      tab[k].addEventListener('click', () => {
+        show(k);
+        if (k === 'bandcamp' && !loaded.bandcamp) inject('bandcamp', BC_SRC(false), 'Fighting Death — Bandcamp album player', 'autoplay');
+        if (k === 'youtube'  && !loaded.youtube)  inject('youtube', YT_SRC(null, false), 'Fighting Death — YouTube player', 'autoplay; encrypted-media; picture-in-picture; fullscreen');
+      });
+    });
+
+    document.querySelectorAll('.track, .text-btn[data-yt]').forEach((b) => {
+      b.addEventListener('click', () => playYouTube(b.dataset.yt, b.dataset.np));
+    });
+  })();
+</script>
+
+</body>
+</html>
